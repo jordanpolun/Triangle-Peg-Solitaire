@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Driver
+comment1.params=args
+comment1.target=void\ Main(java.lang.String[])
+comment2.params=t
+comment2.target=FindMoves(Triangle)
+comment3.params=x
+comment3.target=int\ CalculateLayer(int)
+comment4.params=x
+comment4.target=int[]\ GetStarts(int)
+comment5.params=t\ start\ end
+comment5.target=boolean\ ValidMove(Triangle,\ int,\ int)
+numComments=6

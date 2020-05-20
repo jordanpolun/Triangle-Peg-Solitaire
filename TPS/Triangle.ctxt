@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Triangle
+comment1.params=layers
+comment1.target=Triangle(int)
+comment10.params=
+comment10.target=Triangle\ GetParent()
+comment11.params=
+comment11.target=void\ PrintBoard()
+comment2.params=t\ move
+comment2.target=Triangle(Triangle,\ int[])
+comment3.params=
+comment3.target=int\ GetLayers()
+comment4.params=index
+comment4.target=boolean\ GetBoardValue(int)
+comment5.params=
+comment5.target=int\ GetBoardSize()
+comment6.params=
+comment6.target=int\ GetPegsLeft()
+comment7.params=index
+comment7.target=void\ Remove(int)
+comment8.params=
+comment8.target=int\ CalculatePegsLeft()
+comment9.params=
+comment9.target=boolean\ IsComplete()
+numComments=12
