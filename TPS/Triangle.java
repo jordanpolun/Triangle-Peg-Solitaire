@@ -1,7 +1,6 @@
 public class Triangle
 {
     private int board_size;
-    private int pegs_left;
     private int layers;
     private boolean[] board;
     private Triangle parent;
@@ -10,7 +9,6 @@ public class Triangle
         // Initialize new board
         this.layers = layers;
         this.board_size = layers * (layers + 1)/2;
-        this.pegs_left = this.board_size;
         this.board = new boolean[this.board_size];
         this.parent = null;
 
@@ -39,7 +37,6 @@ public class Triangle
         this.board[start_index] = false;
         this.board[end_index] = true;
         this.board[(start_index + end_index)/2] = false;
-        this.pegs_left = t.GetPegsLeft() - 1;
     }
 
     public int GetLayers()
@@ -59,15 +56,9 @@ public class Triangle
         return this.board_size;
     }
 
-    public int GetPegsLeft()
-    {
-        return this.pegs_left;
-    }
-
     public void Remove(int index)
     {
         this.board[index] = false;
-        this.pegs_left -= 1;
     }
 
     public int CalculatePegsLeft()
@@ -85,12 +76,40 @@ public class Triangle
 
     public boolean IsComplete()
     {
-        return this.pegs_left == 1;
+        return this.CalculatePegsLeft() == 1;
     }
 
     public Triangle GetParent()
     {
         return this.parent;
+    }
+
+    public int PrintMoves()
+    {
+        int n = 1;
+        if (this.parent != null)
+        {
+            n = this.parent.PrintMoves() + 1;
+        }
+
+        this.PrintBoard();
+        return n;
+    }
+
+    public int AsNumber()
+    {
+        // Convert board of true (1) and false (0) into decimal as if binary
+        int num = 0;
+        int multiplier = 1;
+        for (boolean b : this.board)
+        {
+            if (b)
+            {
+                num += multiplier;
+            }
+            multiplier *= 2;
+        }
+        return num;
     }
 
     public void PrintBoard()

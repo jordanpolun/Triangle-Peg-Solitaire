@@ -5,25 +5,51 @@ public class Driver
 {
     public static void Main(String[] args)
     {
-        Triangle initial_triangle = new Triangle(6);
+        // Start with an initial triangle
+        Triangle initial_triangle = new Triangle(4);
         initial_triangle.Remove(1);
         System.out.println("Initial triangle:");
         initial_triangle.PrintBoard();
 
+        Triangle t = RunTests(initial_triangle);
+
+        // Print moves if solution found
+        if (t != null)
+        {
+            int num_moves = t.PrintMoves();
+            System.out.println(num_moves + " moves.");
+        }
+        else
+        {
+            System.out.println("No solution found.");
+        }
+    }
+
+    public static Triangle RunTests(Triangle initial_triangle)
+    {
         // Queue of triangles to test, each one move at a time from its parent
+        // Because this is depth-first, we will find the quickest possible way
         Queue<Triangle> queue = new LinkedList<>(); 
         queue.add(initial_triangle);
         int peak_queue_size = 0;
+
+        // boolean[] will check if triangle formation has already been checked before adding it to queue
+        boolean[] checked = new boolean[(int)Math.pow(2, initial_triangle.GetBoardSize())];
 
         // Keep adding new triangle formations to the queue until one is complete
         Triangle t = initial_triangle;
         while (queue.size() > 0 && !t.IsComplete())
         {
             t = queue.remove();
-            ArrayList<int[]> moves = FindMoves(t);
+            checked[t.AsNumber()] = true; // Add this to the list of triangles we've checked
+            ArrayList<int[]> moves = FindMoves(t); // Find all possible moves
             for (int[] move : moves)
             {
-                queue.add(new Triangle(t, move));
+                Triangle child = new Triangle(t, move);
+                if (!checked[child.AsNumber()]) // If we already checked this formation, don't add it
+                {
+                    queue.add(child);
+                }
             }
 
             // Record how large the queue got at its worst
@@ -34,17 +60,12 @@ public class Driver
         }
         queue.clear();
 
-        // Print moves
-        while (t.GetParent() != null)
-        {
-            t.PrintBoard();
-            System.out.println();
-            t = t.GetParent();
-        }
-        t.PrintBoard();
-
-        System.out.println("Working backwards ^^");
         System.out.println("Peak queue size: " + peak_queue_size);
+        if (t.IsComplete())
+        {
+            return t;
+        }
+        return null;
     }
 
     public static ArrayList<int[]> FindMoves(Triangle t)
@@ -52,7 +73,7 @@ public class Driver
         ArrayList<int[]> moves = new ArrayList<int[]>(); // Each move is an array of [start, end]
 
         // Find where all possible moves could end
-        int[] end_targets = new int[t.GetBoardSize() - t.GetPegsLeft()];
+        int[] end_targets = new int[t.GetBoardSize() - t.CalculatePegsLeft()];
         int end_targets_index = 0;
         for (int i = 0; i < t.GetBoardSize(); i++)
         {
